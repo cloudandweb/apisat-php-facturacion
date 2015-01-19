@@ -1,14 +1,21 @@
 <?php
-namespace Apisat\Clases;
+namespace Apisat\Factura;
 
 abstract class Apisat
 {
+    //Metodo al que corresponde la peticion
     protected $metodo;
+    //Folio fiscal
     protected $uuid;
+    //Llave privada para facturar
     protected $llave_privada;
+    //llave publica para facturar
     protected $llave_publica;
+    //Timestamp UTC correspondiente al formato ISO 8601
     protected $time;
+    //Url de la peticion
     protected $url;
+    //Url del path de la peticion ver sandbox.apisat.mx o prod.apisat.mx
     protected $raw_url;
 
     /**
@@ -40,10 +47,18 @@ abstract class Apisat
      */
     public function setUrl($uuid='',$file=false, $tipo='')
     {
-        if($file)
+        //Cuando es para obtener algun archivo
+        if($file && $tipo!='')
             $this->url =Config::SCHEME.Config::BASE_URL.'/factura/'.$uuid.'/'.$tipo;
-        else
-            $this->url = Config::SCHEME.Config::BASE_URL.'/factura/'.$uuid;
+        else {
+
+            if ($uuid == '')
+                //Para el timbrado
+                $this->url = Config::SCHEME . Config::BASE_URL . Config::PATH_TIMBRADO;
+            else
+                //Para el detalle o cancelacion
+                $this->url = Config::SCHEME . Config::BASE_URL . '/factura/' . $uuid;
+        }
     }
 
     /**
@@ -127,15 +142,16 @@ abstract class Apisat
     }
 
     /**
-     * @param $url_base
+     *
      *
      * Este metodo realiza el hash HMAC y la codificacion a base64 para mandar la llave privada encriptada
      */
     public function transformarLlave($url_base)
     {
-        //Toma la url como esta descrita el http://sandbox.apisat.mx
-        $url_parsed=parse_url($url_base);
 
+        //Toma la url como esta descrita el http://sandbox.apisat.mx ej: http://sandbox.apisat.mx/api/1.0/factura/{uuid} tal cual
+        $url_parsed=parse_url($url_base);
+        //Concatena la informacion Metodo, Nombre del host, el Path, el Scheme de la ruta http o https el timestamp y la llave publica separadas por @
         $data=$this->getMetodo().'@'.$url_parsed['host'].$url_parsed['path'].'@'.$url_parsed['scheme'].'@'.$this->getTime().'@'.$this->getLlavePublica();
 
         //Una vez parseada la ruta se procede a realizar el HMAC
