@@ -10,12 +10,13 @@ use Apisat\Factura\Clases\Opcion;
 use Apisat\Factura\Clases\Total;
 use Apisat\Factura\Clases\Direccion;
 use Apisat\Factura\Clases\Articulo;
+use Apisat\Factura\Config;
 
 class Example
 {
     public static function Detalle()
     {
-        $detalle= new Detalle('key_f7f99088d457278fa1b059c34f01df5d','key_6b305bf82216f505d826e4c1cf8df5b2','1234');
+        $detalle= new Detalle(Config::LLAVE_PUBLICA,Config::LLAVE_PRIVADA,'1234');
         $detalle->transformarLlave($detalle->getRawUrl());
         $detalle->setUrl($detalle->getUuid());
 
@@ -25,7 +26,7 @@ class Example
 
     public static function Cancelar()
     {
-        $cancelar= new Cancelar('key_f7f99088d457278fa1b059c34f01df5d','key_6b305bf82216f505d826e4c1cf8df5b2','1234','AAD990814BP7');
+        $cancelar= new Cancelar(Config::LLAVE_PUBLICA,Config::LLAVE_PRIVADA,'1234','AAD990814BP7');
         $cancelar->transformarLlave($cancelar->getRawUrl());
         $cancelar->setUrl($cancelar->getUuid());
 
@@ -35,7 +36,7 @@ class Example
 
     public static function filePdf()
     {
-        $archivo= new Files('key_f7f99088d457278fa1b059c34f01df5d','key_6b305bf82216f505d826e4c1cf8df5b2','1234','pdf');
+        $archivo= new Files(Config::LLAVE_PUBLICA,Config::LLAVE_PRIVADA,'1234','pdf');
         $archivo->transformarLlave($archivo->getRawUrl());
         $archivo->setUrl($archivo->getUuid(),true,'pdf');
 
@@ -45,7 +46,7 @@ class Example
 
     public static function fileXML()
     {
-        $archivo= new Files('key_f7f99088d457278fa1b059c34f01df5d','key_6b305bf82216f505d826e4c1cf8df5b2','1234','xml');
+        $archivo= new Files(Config::LLAVE_PUBLICA,Config::LLAVE_PRIVADA,'1234','xml');
         $archivo->transformarLlave($archivo->getRawUrl());
         $archivo->setUrl($archivo->getUuid(),true,'xml');
 

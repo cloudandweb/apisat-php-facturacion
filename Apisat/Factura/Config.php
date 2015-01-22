@@ -19,4 +19,6 @@ class Config{
     const TIMBRADO_MET='POST';
     const CANCELADO_MET='DELETE';
     const DETALLE_MET='GET';
+    const LLAVE_PUBLICA='Tu llave publica';
+    CONST LLAVE_PRIVADA='Tu llave privada';
 }
